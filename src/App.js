@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { Unity, useUnityContext } from "react-unity-webgl";
+import "./App.css";
 
 function App() {
+  const { unityProvider, isLoaded, loadingProgression } = useUnityContext({
+    loaderUrl: "unity/build.loader.js",
+    dataUrl: "unity/build.data",
+    frameworkUrl: "unity/build.framework.js",
+    codeUrl: "unity/build.wasm",
+  });
+
+  const loadingPercentage = Math.round(loadingProgression * 100);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      {isLoaded === false && (
+        <div className="loading-overlay">
+          <p>Loading... ({loadingPercentage}%)</p>
+        </div>
+      )}
+      <Unity className="unity" unityProvider={unityProvider} />
+      <div > 
+        Let See More
+      </div>
     </div>
   );
 }
-
 export default App;
